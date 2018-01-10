@@ -8,15 +8,7 @@
         <heading :title="title"></heading>
         <uploader v-if="!isIOSSafari" @loaded="updateOpt"></uploader>
         <div class="support__banner" v-else>
-          <p>Not supported on <b>iOS Safari</b>. :(.<br><br>Currently usable on: </p>
-          <div class="logos">
-            <a href="https://itunes.apple.com/us/app/chrome/id535886823?" target="_blank">
-              <img width="50px" :src="firefoxLogo"/>
-            </a>
-            <a href="https://itunes.apple.com/us/app/firefox-web-browser/id989804926?mt=8" target="_blank">
-              <img width="50px" :src="chromeLogo"/>
-            </a>
-          </div>
+          <p>Not supported on <b>iOS Safari</b>. :(.</p>
         </div>
         <footing></footing>
       </div>
