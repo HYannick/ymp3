@@ -1,0 +1,25 @@
+{
+  "name": "Ymp3",
+  "short_name": "Ymp3",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff",
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.google.samples.apps.iosched"
+    }
+  ],
+  "theme_color": "red",
+  "icons": [{
+    "src": "./logo.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  },
+    {
+      "src": "./logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }]
+}
