@@ -123,12 +123,12 @@
         axios({
           method: 'post',
           url: `${this.api}/upload`,
-          responseType: 'blob',
+          responseType: 'json',
           data: {url: this.url}
         })
           .then(res => {
             this.submitting = false
-            this.downloadLink = window.URL.createObjectURL(res.data)
+            this.downloadLink = res.data.downloadUrl
             setTimeout(() => {
               this.$refs['dn-link'].click()
             }, 1000)
