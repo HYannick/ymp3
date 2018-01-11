@@ -32,7 +32,7 @@
       </div>
 
       <button class="yt__upload" :class="{active : loaded}" type="submit" :disabled="submitting || !loaded">
-        Get my song
+        Convert
       </button>
       <div class="download__wrapper" v-show="downloadLink">
         <p>Download didn't launch? Click here:</p>
@@ -273,6 +273,7 @@
       font-size: 18px;
       border-radius: 30px 30px 50px 50px;
       border: none;
+      background: white;
       box-shadow: 0 0 20px 0 rgba(170, 170, 170, 0.50);
       transition: 0.3s;
       &.active {

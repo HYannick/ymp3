@@ -2,6 +2,12 @@
   <div class="header">
     <img :src="logo"/>
     <h1 class="title">{{ title || 'Just put your damn link.' }}</h1>
+    <div class="options">
+      <input type="radio" id="search" :value="true" v-model="picked">
+      <label for="search">Search</label>
+      <input type="radio" id="copypaste" :value="false" v-model="picked">
+      <label for="copypaste">Copy/Paste</label>
+    </div>
   </div>
 </template>
 <script>
@@ -10,17 +16,68 @@
     props: ['title'],
     data () {
       return {
-        logo: config.logo
+        logo: config.logo,
+        picked: true
       }
+    },
+    updated () {
+      console.log(this.picked)
+      this.$emit('switch', {select: this.picked})
     }
   }
 </script>
 <style lang="scss" scoped>
+  .options {
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    .separator {
+      width: 1px;
+      height: 30px;
+      background: #5c5c5c;
+      opacity: 0.2;
+    }
+    input[type="radio"] {
+      display: none;
+      &:checked + label {
+        color: white;
+        &:after {
+         height: 100%;
+        }
+      }
+    }
+    label {
+      width: 150px;
+      transition: 0.3s;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      display: block;
+      position: relative;
+      box-shadow: 0 0 20px 0 rgba(170, 170, 170, 0.50);
+      overflow: hidden;
+      border-radius: 10px 0 0 20px;
+      &:last-child{
+        border-radius: 0 10px 20px 0;
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 0;
+        bottom:0;
+        left: 0;
+        z-index: -1;
+        background: red;
+        transition: 0.3s;
+      }
+    }
+  }
   .header {
-    flex: 0.5;
-    height: 150px;
     width: 100%;
-    padding: 15px;
+    height: 260px;
     background-size: 100%;
     display: flex;
     align-items: center;
@@ -34,7 +91,7 @@
     &:before {
       content: '';
       width: 20px;
-      height: %;
+      height: 0%;
       border-radius: 0 0 50px 50px;
       position: absolute;
       background: #ff0100;

@@ -12,6 +12,9 @@
   .footer {
     width: 100%;
     padding: 15px;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
     transition: all 0.3s;
     &:after {
       content: '';

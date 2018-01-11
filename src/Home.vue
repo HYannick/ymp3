@@ -5,8 +5,11 @@
         <img width="100%" v-show="picture" :src="picture"/>
       </div>
       <div class="container" :class="{filled: loaded}" v-show="show">
-        <heading :title="title"></heading>
-        <uploader v-if="!isIOSSafari" @loaded="updateOpt"></uploader>
+        <heading :title="title" @switch="goTo"></heading>
+        <div v-if="!isIOSSafari" style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center">
+          <uploader v-if="!switchTo" @loaded="updateOpt"></uploader>
+          <search-song v-else></search-song>
+        </div>
         <div class="support__banner" v-else>
           <p>Not supported on <b>iOS Safari</b>. :(.</p>
         </div>
@@ -21,15 +24,16 @@
   import Heading from './components/Header.vue'
   import Footing from './components/Footer.vue'
   import Uploader from './components/Upload.vue'
+  import SearchSong from './components/SearchSongs.vue'
   import Spinner from './components/utils/Spinner.vue'
   import config from './config'
-
   export default {
     components: {
       Spinner,
       Heading,
       Footing,
-      Uploader
+      Uploader,
+      SearchSong
     },
     mounted() {
       this.show = true
@@ -49,10 +53,15 @@
         title: '',
         isIOSSafari: false,
         firefoxLogo: config.firefox,
-        chromeLogo: config.chrome
+        chromeLogo: config.chrome,
+        switchTo: true
       }
     },
     methods: {
+      goTo(bool) {
+        console.log(bool)
+        this.switchTo = bool.select
+      },
       updateOpt(data) {
         const {loaded, picture, title} = data;
         this.loaded = loaded;
@@ -102,7 +111,7 @@
   }
 
   .container {
-    height: 100vh;
+    min-height: 100vh;
     max-width: 450px;
     margin: 0 auto;
     width: 100%;
