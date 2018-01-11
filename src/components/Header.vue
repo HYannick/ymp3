@@ -98,6 +98,7 @@
       position: relative;
       display: block;
       margin-top: 1rem;
+      padding: 0 15px;
     }
   }
 </style>
