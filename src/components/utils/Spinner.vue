@@ -83,8 +83,4 @@
       transform: rotate(450deg);
     }
   }
-
-  svg {
-    stroke: #fff;
-  }
 </style>

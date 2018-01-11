@@ -136,7 +136,6 @@
           .catch(err => {
             this.err = 'Failed to format the video'
           })
-
       }
     }
   }
@@ -159,12 +158,17 @@
     height: 100%;
     display: flex;
     align-items: center;
+    border-radius: 50px 50px 0 0;
     justify-content: center;
     color: white;
     z-index: 20;
     background: rgba(221, 214, 243, 0.50); /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, rgba(221, 214, 243, 0.50), rgba(250, 172, 168, 0.50)); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, rgba(221, 214, 243, 0.50), rgba(250, 172, 168, 0.50)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    svg {
+      stroke: #fff;
+    }
     .progress {
       position: absolute;
       bottom: 0;

@@ -2,12 +2,6 @@
   <div class="header">
     <img :src="logo"/>
     <h1 class="title">{{ title || 'Just put your damn link.' }}</h1>
-    <div class="options">
-      <input type="radio" id="search" :value="true" v-model="picked">
-      <label for="search">Search</label>
-      <input type="radio" id="copypaste" :value="false" v-model="picked">
-      <label for="copypaste">Copy/Paste</label>
-    </div>
   </div>
 </template>
 <script>
@@ -16,13 +10,8 @@
     props: ['title'],
     data () {
       return {
-        logo: config.logo,
-        picked: true
+        logo: config.logo
       }
-    },
-    updated () {
-      console.log(this.picked)
-      this.$emit('switch', {select: this.picked})
     }
   }
 </script>

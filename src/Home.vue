@@ -5,10 +5,9 @@
         <img width="100%" v-show="picture" :src="picture"/>
       </div>
       <div class="container" :class="{filled: loaded}" v-show="show">
-        <heading :title="title" @switch="goTo"></heading>
+        <heading :title="title"></heading>
         <div v-if="!isIOSSafari" style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center">
-          <uploader v-if="!switchTo" @loaded="updateOpt"></uploader>
-          <search-song v-else></search-song>
+          <search-song @onSubmitting="updateOpt"></search-song>
         </div>
         <div class="support__banner" v-else>
           <p>Not supported on <b>iOS Safari</b>. :(.</p>
@@ -23,7 +22,6 @@
   import axios from 'axios'
   import Heading from './components/Header.vue'
   import Footing from './components/Footer.vue'
-  import Uploader from './components/Upload.vue'
   import SearchSong from './components/SearchSongs.vue'
   import Spinner from './components/utils/Spinner.vue'
   import config from './config'
@@ -32,7 +30,6 @@
       Spinner,
       Heading,
       Footing,
-      Uploader,
       SearchSong
     },
     mounted() {
@@ -54,15 +51,11 @@
         isIOSSafari: false,
         firefoxLogo: config.firefox,
         chromeLogo: config.chrome,
-        switchTo: true
       }
     },
     methods: {
-      goTo(bool) {
-        console.log(bool)
-        this.switchTo = bool.select
-      },
       updateOpt(data) {
+        console.log(data)
         const {loaded, picture, title} = data;
         this.loaded = loaded;
         this.picture = picture;
