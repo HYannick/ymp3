@@ -1,21 +1,20 @@
 <template>
   <transition name="fade">
-    <li ref="result-item" class="result__item">
-      <div @click.once="convertMP3(song.link)">
-        <div class="get__it">
+    <div ref="result-item" class="result__item">
+      <div style="position: relative" @click.once="convertMP3(song.link)">
+        <div class="download__status">
           <download-icon v-if="submitting === 'start'"></download-icon>
           <spinner class="spinner" v-else-if="submitting === 'pending'"></spinner>
           <validate v-else></validate>
         </div>
         <div class="result__item-head" :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
           <img width="100%" :src="song.thumbnails.high.url"/>
-          {{song.id}}
           <h3 :class="{complete : submitting === 'complete'}">{{doneTxt || song.title}}</h3>
           <div class="progress" :style="{width: `${progress}%`}"></div>
         </div>
       </div>
       <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
-    </li>
+    </div>
   </transition>
 </template>
 <script>
@@ -91,7 +90,7 @@
   }
 </script>
 <style lang="scss">
-  .get__it {
+  .download__status {
     background: transparent;
     border: none;
     width: 100%;
@@ -112,16 +111,6 @@
     }
   }
 
-  .youtube__search {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 4rem;
-  }
-
-  .results__container {
-    padding: 30px 15px;
-    overflow: hidden;
-  }
   .progress {
     position: absolute;
     bottom: 0;
@@ -175,37 +164,22 @@
   }
 
   .result__item {
-    position: relative;
+    flex: 0 1 auto;
+    margin: 0 1rem 3rem;
+    width: 25%;
+    @media screen and (max-width: 768px) {
+      width: 45%;
+    }
+    @media screen and (max-width: 600px) {
+      width: 100%;
+    }
     box-shadow: 0 0 30px 5px rgba(170, 170, 170, 0.5);
-    margin-bottom: 3rem;
     display: flex;
     overflow: hidden;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 40px;
-  }
-
-  .input__search {
-    margin-top: 1rem;
-    color: #333;
-    padding: 1rem 2rem;
-    outline: #333;
-    font-size: 18px;
-    border-radius: 30px 30px 50px 50px;
-    border: none;
-    background: white;
-    box-shadow: 0 0 20px 0 rgba(170, 170, 170, 0.50);
     transition: 0.3s;
-    &.active {
-      background: #ff0102;
-      color: white;
-    }
-    &:active {
-      box-shadow: 0 0 10px 0 rgba(170, 170, 170, 0.50);
-    }
-    &:disabled {
-      opacity: 0.4;
-    }
   }
 </style>

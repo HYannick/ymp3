@@ -268,29 +268,7 @@
       }
     }
 
-    .yt__upload {
-      margin-top: 1rem;
-      background: transparent;
-      color: #333;
-      padding: 1rem 2rem;
-      outline: #333;
-      font-size: 18px;
-      border-radius: 30px 30px 50px 50px;
-      border: none;
-      background: white;
-      box-shadow: 0 0 20px 0 rgba(170, 170, 170, 0.50);
-      transition: 0.3s;
-      &.active {
-        background: #ff0102;
-        color: white;
-      }
-      &:active {
-        box-shadow: 0 0 10px 0 rgba(170, 170, 170, 0.50);
-      }
-      &:disabled {
-        opacity: 0.4;
-      }
-    }
+
   }
   //transition
   .fade-enter-active, .fade-leave-active {

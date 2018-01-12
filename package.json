@@ -1,0 +1,33 @@
+{
+  "name": "poi-sheep",
+  "version": "1.0.0",
+  "description": "Simple Youtube mp3 converter",
+  "main": "poi.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "node-sass": "^4.7.2",
+    "offline-plugin": "^4.9.0",
+    "poi": "^9.6.12",
+    "poi-preset-offline": "^9.0.3",
+    "sass-loader": "^6.0.6",
+    "vue-socket.io": "^2.1.1-a"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HYannick/ymp3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HYannick/ymp3/issues"
+  },
+  "homepage": "https://github.com/HYannick/ymp3#readme"
+}

@@ -98,14 +98,16 @@
       width: 100%;
       opacity: 0.3;
       transform: scale(1.5);
-      filter: blur(10px);
+      filter: blur(1px);
       transition: 0.3s;
+      @media screen and  (max-width: 768px) {
+        transform: scale(3.5);
+      }
     }
   }
 
   .container {
     min-height: 100vh;
-    max-width: 450px;
     margin: 0 auto;
     width: 100%;
     position: relative;
