@@ -48,9 +48,7 @@
         loaded: false,
         picture: '',
         title: '',
-        isIOSSafari: false,
-        firefoxLogo: config.firefox,
-        chromeLogo: config.chrome,
+        isIOSSafari: false
       }
     },
     methods: {
