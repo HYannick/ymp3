@@ -34,12 +34,12 @@
       connect: function () {
         console.log('socket connected')
       },
-      customEmit: function (val) {
-        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-      },
       downloading: function (progress) {
         console.log('progress status ->', progress)
-        this.progress = progress;
+        console.log(progress.id === this.song.id)
+        if(progress.id === this.song.id) {
+          this.progress =  progress.status;
+        }
       }
     },
     props: ['song'],

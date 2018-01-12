@@ -108,13 +108,14 @@
     width: 4rem;
     align-self: center;
     outline: #333;
+    /*flex: 0.2;*/
     font-size: 18px;
     border-radius: 0 30px 50px 0;
     border: none;
     background: white;
     transition: 0.5s;
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
     padding: 0.8rem;
     &:after {
       content: '';
@@ -160,7 +161,7 @@
   }
   .input__search {
     color: #333;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 0rem 0.8rem 1.5rem;
     outline: #333;
     font-size: 18px;
     flex: 1;
