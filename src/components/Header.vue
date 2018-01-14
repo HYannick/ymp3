@@ -1,16 +1,29 @@
 <template>
   <div class="header">
+    <div class="lang__changer">
+      <a @click="changeLanguage('en')"><flag-icon :lang="'en'"></flag-icon></a>
+      <a @click="changeLanguage('fr')"><flag-icon :lang="'fr'"></flag-icon></a>
+    </div>
     <img :src="logo"/>
-    <h1 class="title">{{ title || 'Just put your damn link.' }}</h1>
+    <h1 class="title">{{ title || $t("intro") }}</h1>
   </div>
 </template>
 <script>
   import config from '../config'
+  import FlagIcon from './utils/Flags.vue'
   export default {
     props: ['title'],
+    components: {
+      FlagIcon
+    },
     data () {
       return {
         logo: config.logo
+      }
+    },
+    methods: {
+      changeLanguage(lang) {
+        this.$i18n.i18next.changeLanguage(lang);
       }
     }
   }
@@ -99,6 +112,14 @@
       display: block;
       margin-top: 1rem;
       padding: 0 15px;
+    }
+  }
+  .lang__changer {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    svg {
+      width: 30px;
     }
   }
 </style>

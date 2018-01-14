@@ -1,11 +1,16 @@
 <template>
   <transition name="fade">
     <div ref="result-item" class="result__item">
-      <div style="position: relative" @click.once="convertMP3(song.link)">
+      <div style="position: relative" @click.once="convertMP3">
+        <div class="message__box" v-if="err || successText">
+          <p class="err__text" v-if="err">{{err}}</p>
+          <p class="success__text" v-else>{{successText}}</p>
+        </div>
         <div class="download__status">
           <download-icon v-if="submitting === 'start'"></download-icon>
           <spinner class="spinner" v-else-if="submitting === 'pending'"></spinner>
-          <validate v-else></validate>
+          <error-icon v-else-if="submitting === 'error'"></error-icon>
+          <validate-icon v-else></validate-icon>
         </div>
         <div class="result__item-head" :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
           <img width="100%" :src="song.thumbnails.high.url"/>
@@ -22,13 +27,15 @@
   import config from '../config'
   import Spinner from './utils/Spinner'
   import DownloadIcon from './utils/DownloadIcon.vue'
-  import Validate from './utils/Validate.vue'
+  import ValidateIcon from './utils/Validate.vue'
+  import ErrorIcon from './utils/Error.vue'
 
   export default {
     components: {
       Spinner,
       DownloadIcon,
-      Validate
+      ValidateIcon,
+      ErrorIcon
     },
     sockets: {
       connect: function () {
@@ -51,13 +58,14 @@
         downloadLink: '',
         submitting: 'start',
         progress: 0,
-        doneTxt: ''
+        doneTxt: '',
+        err: '',
+        successText: ''
       }
     },
     methods: {
-      convertMP3(url) {
+      convertMP3() {
         console.log('submitting ...')
-        console.log(url)
         this.submitting = 'pending'
         this.progress = 0;
         this.picture = this.song.thumbnails.high.url
@@ -67,15 +75,20 @@
           method: 'post',
           url: `${this.api}/upload`,
           responseType: 'blob',
-          data: {url}
+          data: {
+            id: this.song.id,
+            url: this.song.link,
+            title: this.song.title.replace(new RegExp('/', 'g'), '-')
+          }
         })
           .then(res => {
             this.progress = 0;
             this.submitting = 'complete'
-            this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: 'Type some other titles (─‿─)'})
+            this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: this.$i18n.i18next.t('typeother')})
             this.downloadLink = window.URL.createObjectURL(res.data)
             console.log(this.downloadLink)
-            this.doneTxt = 'Converted !'
+            this.doneTxt = 'Converted !';
+            this.successText = this.$i18n.i18next.t('like');
             setTimeout(() => {
               console.log('downloading ...')
               console.log(this.$refs['result-item'])
@@ -83,7 +96,11 @@
             }, 1000)
           })
           .catch(err => {
-            this.err = 'Failed to format the video'
+            console.log(err)
+            this.progress = 0;
+            this.submitting = 'error'
+            this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: this.$i18n.i18next.t('retry')})
+            this.err = this.$i18n.i18next.t('failed')
           })
       }
     }
@@ -120,6 +137,27 @@
     transition: 0.3s ease-out;
     background: rgba(255, 0, 0, 0.40);
     z-index: 1;
+  }
+  .message__box {
+    background: rgba(0, 0, 0, 0.5);
+    /*box-shadow: 0 0 15px 10px rgba(255, 255, 255, 0.8);*/
+    position: absolute;
+    display: flex;
+    padding: 5px 10px;
+    border-radius: 50px 50px 30px 30px;
+    top: 8px;
+    justify-content: center;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%);
+    z-index: 1;
+    font-size: 14px;
+  }
+  .err__text {
+    color: #ff7875;
+  }
+  .success__text {
+    color: #38ef7d;
   }
   .result__item-head {
     position: relative;
@@ -164,6 +202,7 @@
   }
 
   .result__item {
+    cursor: pointer;
     flex: 0 1 auto;
     margin: 0 1rem 3rem;
     width: 25%;
@@ -172,6 +211,7 @@
     }
     @media screen and (max-width: 600px) {
       width: 100%;
+      margin: 0 auto 3rem;
     }
     box-shadow: 0 0 30px 5px rgba(170, 170, 170, 0.5);
     display: flex;

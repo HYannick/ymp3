@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <p class="copyright">Made by <span style="color: crimson">Ayho</span></p>
-    <p class="help">Made with<br>
+    <p class="copyright">{{$t("made")}} <span style="color: crimson">Ayho</span></p>
+    <p class="help">{{$t("help")}}<br>
       <a href="https://github.com/fent/node-ytdl-core" target="_blank" style="color: crimson">ytdl</a> &
       <a href="https://github.com/fluent-ffmpeg/node-fluent-ffmpeg" target="_blank" style="color: crimson">fluent-ffmpeg</a>
     </p>

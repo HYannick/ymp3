@@ -44,6 +44,7 @@
     },
     data() {
       return {
+        lang: 'fr',
         show: false,
         loaded: false,
         picture: '',

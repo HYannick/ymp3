@@ -1,19 +1,19 @@
 <template>
   <transition name="fade">
     <div class="input__container">
-      <form class="youtube__search" @submit.prevent="searchSong">
+      <div class="youtube__search">
         <div style="width: 100%; padding: 0 15px;">
-          <form v-if="submitting === 'complete' || submitting === 'start'" class="search__wrapper" @submit.prevent="searchSong">
-            <input class="input__search" :disabled="requesting" type="text" placeholder="Type here . . ."
+          <form v-if="submitting === 'complete' || submitting === 'start' || submitting ==='error'" class="search__wrapper" @submit.prevent="searchSong">
+            <input class="input__search" :disabled="requesting" type="text" :placeholder="$t('placeholder')"
                    v-model="search"/>
             <button class="yt__upload" type="submit" :class="{active : (search !== '')}" :disabled="requesting || (search === '')">
-              <search-icon v-if="!requesting">Find</search-icon>
+              <search-icon v-if="!requesting"></search-icon>
               <spinner v-else></spinner>
             </button>
           </form>
-          <h3 style="font-size: 18px; text-align: center" v-else>Wait ｡◕‿◕｡</h3>
+          <h3 style="font-size: 18px; text-align: center" v-else>{{$t("pending")}}</h3>
         </div>
-      </form>
+      </div>
       <div class="results__container">
         <list-item :song="song" v-for="(song, i) in results" :key="song.id" @onSubmit="filterResults"></list-item>
       </div>
@@ -66,7 +66,7 @@
         axios.get(`${this.api}/search?item=${this.search}`)
           .then(res => {
             this.requesting = false;
-            this.results = this.youtube_parser(this.search) ? [res.data.results[0]] : res.data.results.filter(item => item.kind === 'youtube#video')
+            this.results = this.youtube_parser(this.search) ? [res.data.results[0]] : res.data.results
           })
           .catch(error => {
             this.err = 'Failed to get infos'
