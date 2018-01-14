@@ -1,27 +1,27 @@
 
 export default {
   en: {
-    intro: 'Just put your damn link.',
-    placeholder: 'Youtube link, artist, song ...',
+    intro: 'What can I convert for you?',
+    placeholder: 'Youtube link, group or music name...',
     converted: 'Converted!',
     like: 'If you like it, buy it!',
-    failed: 'Failed. Video too long (ಥ﹏ಥ)',
-    typeother: 'Type some other titles (─‿─)',
-    retry: 'That sucks. Don\'t Worry. Type some other titles (─‿─)',
-    pending: 'Wait ｡◕‿◕｡',
-    made: 'Made by',
+    failed: 'Failed. Too long video (ಥ﹏ಥ)',
+    typeother: 'Type another title (─‿─)',
+    retry: 'That sucks but don\'t worry. You can type another title (─‿─)',
+    pending: 'One moment please ｡◕‿◕｡',
+    made: 'Created by',
     help: 'Made with'
   },
   fr: {
-    intro: 'Insère ton lien.',
-    placeholder: 'Lien Youtube, artiste, musique ... ',
-    converted: 'Converti !',
-    like: 'Si tu aimes, achète !',
-    failed: 'Echec. Video trop longue (ಥ﹏ಥ)',
+    intro: 'Que souhaites-tu convertir ?',
+    placeholder: 'Lien Youtube, artiste, titre... ',
+    converted: 'Conversion terminée !',
+    like: 'Si tu aimes ce son, achète-le !',
+    failed: 'Echec. Vidéo trop longue (ಥ﹏ಥ)',
     typeother: 'Tape un autre titre (─‿─)',
-    retry: 'C\'est nul. T\'inquiètes pas. Tape un autre titre (─‿─)',
-    pending: 'Patiente ｡◕‿◕｡',
-    made: 'Fait par',
+    retry: 'C\'est nul mais t\'inquiète pas. Tu peux taper un autre titre (─‿─)',
+    pending: 'Un moment s\'il te plaît ｡◕‿◕｡',
+    made: 'Créé par',
     help: 'Fait avec'
   }
 }

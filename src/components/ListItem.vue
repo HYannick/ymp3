@@ -87,7 +87,7 @@
             this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: this.$i18n.i18next.t('typeother')})
             this.downloadLink = window.URL.createObjectURL(res.data)
             console.log(this.downloadLink)
-            this.doneTxt = 'Converted !';
+            this.doneTxt = this.$i18n.i18next.t('converted');
             this.successText = this.$i18n.i18next.t('like');
             setTimeout(() => {
               console.log('downloading ...')
