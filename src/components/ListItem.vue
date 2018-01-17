@@ -12,13 +12,15 @@
           <error-icon v-else-if="submitting === 'error'"></error-icon>
           <validate-icon v-else></validate-icon>
         </div>
-        <div class="result__item-head" :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
+        <div class="result__item-head"
+             :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
           <img width="100%" :src="song.thumbnails.high.url"/>
           <h3 :class="{complete : submitting === 'complete'}">{{doneTxt || song.title}}</h3>
           <div class="progress" :style="{width: `${progress}%`}"></div>
         </div>
       </div>
       <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
+      <span v-show="successText" class="more__info">{{$t("moreInfo")}}</span>
     </div>
   </transition>
 </template>
@@ -43,9 +45,48 @@
       },
       downloading: function (progress) {
         console.log('progress status ->', progress)
-        console.log(progress.id === this.song.id)
-        if(progress.id === this.song.id) {
-          this.progress =  progress.status;
+        if (progress.id === this.song.id) {
+          this.progress = progress.status;
+        }
+      },
+      sendFileError: function (err) {
+        if (err.id === this.song.id) {
+          console.log(err)
+          this.progress = 0;
+          this.submitting = 'error'
+          this.$emit('onSubmit', {
+            status: this.submitting,
+            id: this.song.id,
+            loaded: false,
+            picture: this.picture,
+            title: this.$i18n.i18next.t('retry')
+          })
+          this.err = this.$i18n.i18next.t('failed')
+        }
+      },
+      sendFile: function (data) {
+        console.log('success -> downloading')
+        if (data.id === this.song.id) {
+          this.progress = 0;
+          const blob = new Blob([new Uint8Array(data.blob)]);
+          this.progress = 0;
+          this.submitting = 'complete'
+          this.$emit('onSubmit', {
+            status: this.submitting,
+            id: this.song.id,
+            loaded: false,
+            picture: this.picture,
+            title: this.$i18n.i18next.t('typeother')
+          })
+          this.downloadLink = window.URL.createObjectURL(blob)
+          console.log(this.downloadLink)
+          this.doneTxt = this.$i18n.i18next.t('converted');
+          this.successText = this.$i18n.i18next.t('like');
+          setTimeout(() => {
+            console.log('downloading ...')
+            console.log(this.$refs['result-item'])
+            this.$refs['result-item'].querySelector('.dl-link').click()
+          }, 1000)
         }
       }
     },
@@ -70,7 +111,13 @@
         this.progress = 0;
         this.picture = this.song.thumbnails.high.url
         this.title = this.song.title
-        this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: true, picture: this.picture, title: this.title})
+        this.$emit('onSubmit', {
+          status: this.submitting,
+          id: this.song.id,
+          loaded: true,
+          picture: this.picture,
+          title: this.title
+        })
         axios({
           method: 'post',
           url: `${this.api}/upload`,
@@ -82,24 +129,19 @@
           }
         })
           .then(res => {
-            this.progress = 0;
-            this.submitting = 'complete'
-            this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: this.$i18n.i18next.t('typeother')})
-            this.downloadLink = window.URL.createObjectURL(res.data)
-            console.log(this.downloadLink)
-            this.doneTxt = this.$i18n.i18next.t('converted');
-            this.successText = this.$i18n.i18next.t('like');
-            setTimeout(() => {
-              console.log('downloading ...')
-              console.log(this.$refs['result-item'])
-              this.$refs['result-item'].querySelector('.dl-link').click()
-            }, 1000)
+            console.log(res.data)
           })
           .catch(err => {
             console.log(err)
             this.progress = 0;
             this.submitting = 'error'
-            this.$emit('onSubmit', {status: this.submitting, id: this.song.id, loaded: false, picture: this.picture, title: this.$i18n.i18next.t('retry')})
+            this.$emit('onSubmit', {
+              status: this.submitting,
+              id: this.song.id,
+              loaded: false,
+              picture: this.picture,
+              title: this.$i18n.i18next.t('retry')
+            })
             this.err = this.$i18n.i18next.t('failed')
           })
       }
@@ -138,6 +180,7 @@
     background: rgba(255, 0, 0, 0.40);
     z-index: 1;
   }
+
   .message__box {
     background: rgba(0, 0, 0, 0.5);
     /*box-shadow: 0 0 15px 10px rgba(255, 255, 255, 0.8);*/
@@ -153,11 +196,27 @@
     z-index: 1;
     font-size: 14px;
   }
+
   .err__text {
     color: #ff7875;
   }
+
   .success__text {
     color: #38ef7d;
+  }
+  .more__info {
+    position: absolute;
+    bottom: 25px;
+    font-size: 12px;
+    text-align: center;
+    color: #38ea7a;
+    /*border: 1px solid;*/
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    border-radius: 30px 30px 50px 50px;
+    width: 80%;
+    box-shadow: 0 0 10px 0 rgba(170, 170, 170, 0.5);
   }
   .result__item-head {
     position: relative;
@@ -174,8 +233,8 @@
       }
     }
     &.complete {
-      background: #11998e;  /* fallback for old browsers */
-      background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+      background: #11998e; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #38ef7d, #11998e); /* Chrome 10-25, Safari 5.1-6 */
       background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     }
     h3 {

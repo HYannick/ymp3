@@ -10,7 +10,8 @@ export default {
     retry: 'That sucks but don\'t worry. You can type another title (─‿─)',
     pending: 'One moment please ｡◕‿◕｡',
     made: 'Created by',
-    help: 'Made with'
+    help: 'Made with',
+    moreInfo: 'Your song is located in your Downloads/ folder :)'
   },
   fr: {
     intro: 'Que souhaites-tu convertir ?',
@@ -22,7 +23,8 @@ export default {
     retry: 'C\'est nul mais t\'inquiète pas. Tu peux taper un autre titre (─‿─)',
     pending: 'Un moment s\'il te plaît ｡◕‿◕｡',
     made: 'Créé par',
-    help: 'Fait avec'
+    help: 'Fait avec',
+    moreInfo: 'Ta musique se trouve dans ton dossier de téléchargement :)'
   }
 }
 

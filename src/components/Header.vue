@@ -79,7 +79,7 @@
   }
   .header {
     width: 100%;
-    height: 260px;
+    height: 220px;
     background-size: 100%;
     display: flex;
     align-items: center;

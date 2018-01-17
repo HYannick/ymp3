@@ -11,7 +11,7 @@
               <spinner v-else></spinner>
             </button>
           </form>
-          <h3 style="font-size: 18px; text-align: center" v-else>{{$t("pending")}}</h3>
+          <h3 style="font-size: 14px; text-align: center" v-else>{{$t("pending")}}</h3>
         </div>
       </div>
       <div class="results__container">
@@ -87,6 +87,7 @@
   }
 
   .results__container {
+    position: relative;
     padding: 30px 15px;
     display: flex;
     flex-wrap: wrap;
@@ -97,7 +98,6 @@
   .search__wrapper {
     overflow: hidden;
     display: flex;
-    margin-top: 1rem;
     border-radius: 30px 30px 50px 50px;
     border: none;
     background: white;
