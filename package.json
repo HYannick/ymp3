@@ -16,6 +16,8 @@
     "poi-preset-karma": "^9.2.3",
     "poi-preset-offline": "^9.0.3",
     "sass-loader": "^6.0.6",
+    "vue-cookie": "^1.1.4",
+    "vue-flickity": "^1.0.9",
     "vue-i18next": "^0.9.1",
     "vue-socket.io": "^2.1.1-a"
   },

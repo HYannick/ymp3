@@ -15,8 +15,8 @@
         <div class="result__item-head"
              :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
           <img width="100%" :src="song.thumbnails.high.url"/>
-          <h3 :class="{complete : submitting === 'complete'}">{{doneTxt || song.title}}</h3>
-          <div class="progress" :style="{width: `${progress}%`}"></div>
+          <h3 v-html="doneTxt || status || song.title" :class="{complete : submitting === 'complete'}"></h3>
+          <div class="progress" :style="{opacity: 0.6, width: `${progress}%`, backgroundColor: progressColor}"></div>
         </div>
       </div>
       <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
@@ -44,9 +44,22 @@
         console.log('socket connected')
       },
       downloading: function (progress) {
-        console.log('progress status ->', progress)
+        console.log('Conversion status ->', progress)
         if (progress.id === this.song.id) {
           this.progress = progress.status;
+          if (progress.status >= 0 && progress.status < 25) {
+            this.status = this.$i18n.i18next.t('status_0')
+            this.progressColor = '#F51441'
+          } else if (progress.status >= 30 && progress.status < 50) {
+            this.status = this.$i18n.i18next.t('status_25')
+            this.progressColor = '#AA00FF'
+          } else if (progress.status >= 50 && progress.status < 75) {
+            this.status = this.$i18n.i18next.t('status_50')
+            this.progressColor = '#FF00AA'
+          } else if (progress.status >= 75) {
+            this.status = this.$i18n.i18next.t('status_75')
+            this.progressColor = '#38ef7d'
+          }
         }
       },
       sendFileError: function (err) {
@@ -93,14 +106,17 @@
     props: ['song'],
     data() {
       return {
+        progressColor: '',
         results: [],
         api: config.api,
         download: config.download,
         downloadLink: '',
+        isConverting: false,
         submitting: 'start',
         progress: 0,
         doneTxt: '',
         err: '',
+        status: '',
         successText: ''
       }
     },
@@ -204,6 +220,7 @@
   .success__text {
     color: #38ef7d;
   }
+
   .more__info {
     position: absolute;
     bottom: 25px;
@@ -218,6 +235,7 @@
     width: 80%;
     box-shadow: 0 0 10px 0 rgba(170, 170, 170, 0.5);
   }
+
   .result__item-head {
     position: relative;
     overflow: hidden;

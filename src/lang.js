@@ -11,7 +11,11 @@ export default {
     pending: 'One moment please ｡◕‿◕｡',
     made: 'Created by',
     help: 'Made with',
-    moreInfo: 'Your song is located in your Downloads/ folder :)'
+    moreInfo: 'Your song is located in your Downloads/ folder :)',
+    status_0: 'Converting...彡ﾟ◉ω◉ )つー☆*',
+    status_25: 'Too damn long I know. (¬､¬)',
+    status_50: 'Magic happening here. <br> (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧',
+    status_75: 'Almooost...ಠ_ಠ',
   },
   fr: {
     intro: 'Que souhaites-tu convertir ?',
@@ -24,7 +28,11 @@ export default {
     pending: 'Un moment s\'il te plaît ｡◕‿◕｡',
     made: 'Créé par',
     help: 'Fait avec',
-    moreInfo: 'Ta musique se trouve dans ton dossier de téléchargement :)'
+    moreInfo: 'Ta musique se trouve dans ton dossier de téléchargement :)',
+    status_0: 'Conversion en cours...<br>彡ﾟ◉ω◉ )つー☆*',
+    status_25: 'Trop long je sais. (¬､¬)',
+    status_50: 'Attention...Magie ! <br> (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧',
+    status_75: 'Preeeesque fini ! ಠ_ಠ',
   }
 }
 

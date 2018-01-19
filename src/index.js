@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import Vue from 'vue';
+import VueCookie from 'vue-cookie';
 import i18next from 'i18next';
 import VueI18Next from '@panter/vue-i18next';
 import Home from './Home.vue'
@@ -9,6 +10,7 @@ import './scss/main.scss';
 
 Vue.use(VueSocketio, config.socket);
 Vue.use(VueI18Next);
+Vue.use(VueCookie);
 
 i18next.init({
   lng: window.navigator.userLanguage || window.navigator.language,

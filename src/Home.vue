@@ -1,6 +1,7 @@
 <template>
   <transition name="fade">
-    <div style="position: relative; overflow-x: hidden;">
+    <on-boarding v-if="isNew === 'true'" @notNewAnymore="changeStatus"></on-boarding>
+    <div v-else style="position: relative; overflow-x: hidden;">
       <div class="main__background" :class="{filled: loaded}">
         <img width="100%" v-show="picture" :src="picture"/>
       </div>
@@ -22,6 +23,7 @@
   import axios from 'axios'
   import Heading from './components/Header.vue'
   import Footing from './components/Footer.vue'
+  import OnBoarding from './components/OnBoarding.vue'
   import SearchSong from './components/SearchSongs.vue'
   import Spinner from './components/utils/Spinner.vue'
   import config from './config'
@@ -30,9 +32,11 @@
       Spinner,
       Heading,
       Footing,
-      SearchSong
+      SearchSong,
+      OnBoarding
     },
     mounted() {
+      console.log('new ?',this.isNew)
       this.show = true
       const ua = window.navigator.userAgent;
       const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
@@ -49,10 +53,15 @@
         loaded: false,
         picture: '',
         title: '',
-        isIOSSafari: false
+        isIOSSafari: false,
+        isNew: this.$cookie.get('ymp3-is-new') || 'true'
       }
     },
     methods: {
+      changeStatus(bool) {
+        this.isNew = bool
+        this.$cookie.set('ymp3-is-new', 'false', 360);
+      },
       updateOpt(data) {
         console.log(data)
         const {loaded, picture, title} = data;
