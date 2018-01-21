@@ -1,24 +1,31 @@
 <template>
   <transition name="fade">
     <div class="input__container">
-      <div class="youtube__search">
-        <div style="width: 100%; padding: 0 15px;">
-          <form v-if="submitting === 'complete' || submitting === 'start' || submitting ==='error'" class="search__wrapper" @submit.prevent="searchSong">
-            <input class="input__search" :disabled="requesting" type="text" :placeholder="$t('placeholder')"
-                   v-model="search"/>
-            <button class="yt__upload" type="submit" :class="{active : (search !== '')}" :disabled="requesting || (search === '')">
-              <search-icon v-if="!requesting"></search-icon>
-              <spinner v-else></spinner>
-            </button>
-          </form>
-          <h3 style="font-size: 14px; text-align: center" v-else>{{$t("pending")}}</h3>
-        </div>
-      </div>
-      <div class="results__container">
-        <list-item :song="song" v-for="(song, i) in results" :key="song.id" @onSubmit="filterResults"></list-item>
-      </div>
-    </div>
 
+      <div v-show="!launchGame">
+        <div class="youtube__search">
+          <div style="width: 100%; padding: 0 15px;">
+            <form v-if="submitting === 'complete' || submitting === 'start' || submitting ==='error'"
+                  class="search__wrapper" @submit.prevent="searchSong">
+              <input class="input__search" :disabled="requesting" type="text" :placeholder="$t('placeholder')"
+                     v-model="search"/>
+              <button class="yt__upload" type="submit" :class="{active : (search !== '')}"
+                      :disabled="requesting || (search === '')">
+                <search-icon v-if="!requesting"></search-icon>
+                <spinner v-else></spinner>
+              </button>
+            </form>
+            <h3 v-html="$t('pending')" style="font-size: 14px; text-align: center" v-else></h3>
+          </div>
+        </div>
+
+        <transition-group name="fade" tag="div" class="results__container">
+          <list-item :song="song" v-for="(song, i) in results" :key="song.id" @onSubmit="filterResults"
+                     @endGame="launchGame=false" @launchGame="launchGame=true" @broadcastStatus="updateStatus"></list-item>
+        </transition-group>
+      </div>
+      <pong v-show="launchGame" :percent="status"></pong>
+    </div>
   </transition>
 </template>
 <script>
@@ -27,16 +34,21 @@
   import Spinner from './utils/Spinner'
   import SearchIcon from './utils/SearchIcon.vue'
   import ListItem from './ListItem.vue'
+  import Pong from './games/Pong.vue'
+
   export default {
     components: {
       Spinner,
       ListItem,
-      SearchIcon
+      SearchIcon,
+      Pong
     },
     data() {
       return {
         results: [],
         search: '',
+        status: '',
+        launchGame: false,
         api: config.api,
         download: config.download,
         downloadLink: '',
@@ -49,7 +61,14 @@
       }
     },
     methods: {
-      filterResults (data) {
+      updateStatus(percent) {
+        this.status = percent
+      },
+      gameOn(bool) {
+        console.log('popo')
+        this.launchGame = bool
+      },
+      filterResults(data) {
         console.log('filtering')
         console.log(data)
         this.results = this.results.filter(song => song.id === data.id)
@@ -79,6 +98,7 @@
   .input__container {
     width: 100%;
   }
+
   .youtube__search {
     display: flex;
     justify-content: center;
@@ -104,6 +124,7 @@
     box-shadow: 0 0 20px 0 rgba(170, 170, 170, 0.50);
     transition: 0.3s;
   }
+
   .yt__upload {
     width: 4rem;
     align-self: center;
@@ -126,7 +147,7 @@
       width: 100%;
       height: 0;
       transition: 0.4s;
-      z-index:  -1;
+      z-index: -1;
     }
     &.active {
       color: white;
@@ -159,6 +180,7 @@
       opacity: 0.7;
     }
   }
+
   .input__search {
     color: #333;
     padding: 0.8rem 0rem 0.8rem 1.5rem;
@@ -174,5 +196,9 @@
     &:disabled {
       opacity: 0.4;
     }
+  }
+
+  .transition__wrapper {
+
   }
 </style>

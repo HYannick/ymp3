@@ -7,6 +7,7 @@
       </div>
       <div class="container" :class="{filled: loaded}" v-show="show">
         <heading :title="title"></heading>
+        <!--<pong-game></pong-game>-->
         <div v-if="!isIOSSafari" style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center">
           <search-song @onSubmitting="updateOpt"></search-song>
         </div>
@@ -23,17 +24,20 @@
   import axios from 'axios'
   import Heading from './components/Header.vue'
   import Footing from './components/Footer.vue'
+  import PongGame from './components/games/Pong.vue'
   import OnBoarding from './components/OnBoarding.vue'
   import SearchSong from './components/SearchSongs.vue'
   import Spinner from './components/utils/Spinner.vue'
   import config from './config'
+  import uuid from 'uuid/v4'
   export default {
     components: {
       Spinner,
       Heading,
       Footing,
       SearchSong,
-      OnBoarding
+      OnBoarding,
+      PongGame
     },
     mounted() {
       console.log('new ?',this.isNew)
@@ -60,7 +64,9 @@
     methods: {
       changeStatus(bool) {
         this.isNew = bool
+        const id = uuid()
         this.$cookie.set('ymp3-is-new', 'false', 360);
+        this.$cookie.set('ymp3-userid', id, 360);
       },
       updateOpt(data) {
         console.log(data)
@@ -106,7 +112,9 @@
       width: 100%;
       opacity: 0.3;
       transform: scale(1.5);
-      filter: blur(1px);
+      @media screen and (min-width: 768px) {
+        filter: blur(1px);
+      }
       transition: 0.3s;
       @media screen and  (max-width: 768px) {
         transform: scale(3.5);

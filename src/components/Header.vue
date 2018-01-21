@@ -5,7 +5,7 @@
       <a @click="changeLanguage('fr')"><flag-icon :lang="'fr'"></flag-icon></a>
     </div>
     <img src="@/assets/logo.png"/>
-    <h1 class="title">{{ title || $t("intro") }}</h1>
+    <h1 class="title" v-html="title || $t('intro')"></h1>
   </div>
 </template>
 <script>

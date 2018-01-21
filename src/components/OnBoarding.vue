@@ -11,10 +11,11 @@
               </video>
               <img class="gif" :src="board.video"  v-else/>
             </div>
-            <h2>{{board.title}}</h2>
+            <img style="width: 90%; margin-bottom: 4rem" v-if="board.picture" :src="board.picture" />
+            <h1 v-html="board.title"></h1>
             <br>
             <p v-html="board.desc"></p>
-            <button class="agreed" v-if="i === boards.length-1" @click="$emit('notNewAnymore', false)">J'ai compris
+            <button class="agreed" v-if="i === boards.length-1" @click="$emit('notNewAnymore', false)">{{ $t('understood') }}
             </button>
           </div>
         </div>
@@ -22,8 +23,8 @@
 
       <!-- if you don't want to use the buttons Flickity provides -->
       <div class="nav-btns">
-        <button @click="previous()" ref="prev-btn">Prev</button>
-        <button @click="next()" ref="next-btn">Next</button>
+        <button @click="previous()" ref="prev-btn">{{ $t('prev') }}</button>
+        <button @click="next()" ref="next-btn">{{ $t('next') }}</button>
       </div>
     </div>
   </transition>
@@ -65,29 +66,33 @@
         smartphone: config.smartphone,
         boards: [
           {
-            title: 'Bienvenue !',
-            desc: 'Je suis Ymp3 et je vais te permettre de convertir tes vidéos YouTube en fichier audio.'
+            picture: '/static/welcome.svg',
+            title: this.$i18n.i18next.t('board_0_title'),
+            desc: this.$i18n.i18next.t('board_0_desc')
           },
           {
-            title: 'EasyPeasy',
+            title: this.$i18n.i18next.t('board_1_title'),
             video: '/static/board_2.mp4',
-            desc: 'Tu aimes une musique ? Aide-toi de ma barre de recherche et tu l\'auras :). Le tout sans pub !<br>Mais ce n\'est pas tout.'
+            desc: this.$i18n.i18next.t('board_1_desc')
           },
           {
-            title: 'Multi-support',
+            title: this.$i18n.i18next.t('board_2_title'),
             video: '/static/board_2.gif',
-            desc: 'Tu peux utiliser mes services sur ton ordinateur, mais aussi sur ton smartphone.<br>Pour cela, il te suffira de m\'ajouter à ton écran d\'accueil !'
+            desc: this.$i18n.i18next.t('board_2_desc')
           },
           {
-            desc: 'Comme toute application, j\'ai besoin de vivre.<br>Certaines appli se servent des publicités. Mais ce n\'est pas mon cas.<br>'
+            picture: '/static/shy.svg',
+            title: this.$i18n.i18next.t('board_3_title'),
+            desc: this.$i18n.i18next.t('board_3_desc')
           },
           {
-            title: 'Le principe est simple et gratuit !',
-            desc: 'Il suffit d\'activer un script qui me permettra de transformer le temps que tu passes à m\'utiliser, en monnaie. cet argent me permettra de financer les serveurs que j\'utilise pour mon bon fonctionnement !<br><br> <b style="color: red;">Important</b>: Je ne récolte <b>aucune</b> donnée personnelle, et tu n\'as strictement rien à payer.'
+            picture: '/static/yeah.svg',
+            title:this.$i18n.i18next.t('board_4_title'),
+            desc: this.$i18n.i18next.t('board_4_desc')
           },
           {
-            title: 'Une dernière petite chose...',
-            desc: 'Toutes les musiques appartiennent à de très talentueux artistes. Cela leur demande du temps et de l\'argent pour nous faire rêver avec leur musique. N\'hésite pas à les soutenir en achetant leurs albums, Ou simplement en likant leur titre<br><br><br><br><span style="font-size: 10px">Si un artiste passe par là et ne veux pas voir ses musiques dans la liste de résultat, merci de m\'envoyer un email (ayho.nine@gmail.com) avec le nom et le lien YouTube de la musique.</span>'
+            title: this.$i18n.i18next.t('board_5_title'),
+            desc: this.$i18n.i18next.t('board_5_desc')
           }
         ]
       }
@@ -145,16 +150,22 @@
       align-items: center;
     }
     .video__container {
-      width: 200px;
+      width: 30vh;
       position: relative;
       margin-bottom: 1rem;
+      background: #eff1f3;
+      border-radius: 15px;
+      img{
+        position: relative;
+        z-index: 1;
+      }
       video, img.gif {
         width: 94%;
         margin-bottom: 2rem;
         position: absolute;
         top: 37px;
         left: 8px;
-        z-index: -1;
+        z-index: 0;
       }
     }
 

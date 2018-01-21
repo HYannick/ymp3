@@ -1,26 +1,32 @@
 <template>
   <transition name="fade">
-    <div ref="result-item" class="result__item">
-      <div style="position: relative" @click.once="convertMP3">
-        <div class="message__box" v-if="err || successText">
-          <p class="err__text" v-if="err">{{err}}</p>
-          <p class="success__text" v-else>{{successText}}</p>
+    <div class="songlist__item" style="margin-bottom: 3rem">
+      <div ref="result-item" class="result__item">
+        <div style="position: relative" @click.once="convertMP3">
+          <div class="message__box" v-if="err || successText">
+            <p class="err__text" v-if="err">{{err}}</p>
+            <p class="success__text" v-else>{{successText}}</p>
+          </div>
+          <div class="download__status">
+            <download-icon v-if="submitting === 'start'"></download-icon>
+            <spinner class="spinner" v-else-if="submitting === 'pending'"></spinner>
+            <error-icon v-else-if="submitting === 'error'"></error-icon>
+            <validate-icon v-else></validate-icon>
+          </div>
+          <div class="result__item-head"
+               :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
+            <img width="100%" :src="song.thumbnails.high.url"/>
+            <h3 v-html="doneTxt || status || song.title" :class="{complete : submitting === 'complete'}"></h3>
+            <div class="progress" :style="{opacity: 0.6, width: `${progress}%`, backgroundColor: progressColor}"></div>
+          </div>
         </div>
-        <div class="download__status">
-          <download-icon v-if="submitting === 'start'"></download-icon>
-          <spinner class="spinner" v-else-if="submitting === 'pending'"></spinner>
-          <error-icon v-else-if="submitting === 'error'"></error-icon>
-          <validate-icon v-else></validate-icon>
-        </div>
-        <div class="result__item-head"
-             :class="{converting: submitting === 'pending', complete: submitting === 'complete'}">
-          <img width="100%" :src="song.thumbnails.high.url"/>
-          <h3 v-html="doneTxt || status || song.title" :class="{complete : submitting === 'complete'}"></h3>
-          <div class="progress" :style="{opacity: 0.6, width: `${progress}%`, backgroundColor: progressColor}"></div>
-        </div>
+        <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
+        <span v-show="successText" class="more__info">{{$t("moreInfo")}}</span>
       </div>
-      <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
-      <span v-show="successText" class="more__info">{{$t("moreInfo")}}</span>
+      <div v-if="gameRequest" class="game__request">
+        <p>Wants to play a game ?</p>
+        <button class="launch__game" @click="$emit('launchGame')">Go !</button>
+      </div>
     </div>
   </transition>
 </template>
@@ -44,21 +50,27 @@
         console.log('socket connected')
       },
       downloading: function (progress) {
-        console.log('Conversion status ->', progress)
-        if (progress.id === this.song.id) {
+        if (progress.id === this.song.id && progress.userId === this.$cookie.get('ymp3-userid')) {
           this.progress = progress.status;
+          this.$emit('broadcastStatus', this.progress);
           if (progress.status >= 0 && progress.status < 25) {
             this.status = this.$i18n.i18next.t('status_0')
-            this.progressColor = '#F51441'
+            this.progressColor = '#F51441';
+            this.gameRequest = true;
           } else if (progress.status >= 30 && progress.status < 50) {
             this.status = this.$i18n.i18next.t('status_25')
             this.progressColor = '#AA00FF'
           } else if (progress.status >= 50 && progress.status < 75) {
             this.status = this.$i18n.i18next.t('status_50')
-            this.progressColor = '#FF00AA'
+            this.progressColor = '#38ef7d'
           } else if (progress.status >= 75) {
             this.status = this.$i18n.i18next.t('status_75')
-            this.progressColor = '#38ef7d'
+            this.progressColor = '#FF00AA'
+          }
+
+          if (progress.status >= 95) {
+            this.$emit('endGame')
+            this.gameRequest = false
           }
         }
       },
@@ -79,7 +91,7 @@
       },
       sendFile: function (data) {
         console.log('success -> downloading')
-        if (data.id === this.song.id) {
+        if (data.id === this.song.id && data.userId === this.$cookie.get('ymp3-userid')) {
           this.progress = 0;
           const blob = new Blob([new Uint8Array(data.blob)]);
           this.progress = 0;
@@ -117,7 +129,8 @@
         doneTxt: '',
         err: '',
         status: '',
-        successText: ''
+        successText: '',
+        gameRequest: false
       }
     },
     methods: {
@@ -140,6 +153,7 @@
           responseType: 'blob',
           data: {
             id: this.song.id,
+            userId: this.$cookie.get('ymp3-userid'),
             url: this.song.link,
             title: this.song.title.replace(new RegExp('/', 'g'), '-')
           }
@@ -227,12 +241,13 @@
     font-size: 12px;
     text-align: center;
     color: #38ea7a;
-    /*border: 1px solid;*/
+    padding: 5px 15px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 5px;
     border-radius: 30px 30px 50px 50px;
-    width: 80%;
+    @media screen and (max-width: 600px) {
+      width: 80%;
+    }
     box-shadow: 0 0 10px 0 rgba(170, 170, 170, 0.5);
   }
 
@@ -247,7 +262,9 @@
     background: linear-gradient(to right, rgba(221, 214, 243, 0.50), rgba(250, 172, 168, 0.50)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     &.converting, &.complete {
       img {
-        filter: blur(5px);
+        @media screen and (min-width: 768px) {
+          filter: blur(5px);
+        }
       }
     }
     &.complete {
@@ -278,18 +295,39 @@
     }
   }
 
-  .result__item {
-    cursor: pointer;
+  .game__request {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    flex-direction: column;
+    button {
+      margin-top: 10px;
+      font-size: 20px;
+      border-radius: 15px 15px 30px 30px;
+      background: white;
+      border:  #38ea7a;
+      outline: #38ea7a;
+      color: #38ea7a;
+      padding: 5px 15px;
+      box-shadow: 0 0 30px 5px rgba(170, 170, 170, 0.3);
+    }
+  }
+  .songlist__item {
     flex: 0 1 auto;
-    margin: 0 1rem 3rem;
+    margin: 0 1rem;
     width: 25%;
     @media screen and (max-width: 768px) {
       width: 45%;
     }
     @media screen and (max-width: 600px) {
       width: 100%;
-      margin: 0 auto 3rem;
+      margin: 0 auto;
     }
+  }
+
+  .result__item {
+    cursor: pointer;
     box-shadow: 0 0 30px 5px rgba(170, 170, 170, 0.5);
     display: flex;
     overflow: hidden;
