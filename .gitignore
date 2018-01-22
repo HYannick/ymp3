@@ -8,6 +8,7 @@ node_modules
 .vscode
 .nvmrc
 dist
+pong_mechanics
 .netlify
 yarn-error.log
 
