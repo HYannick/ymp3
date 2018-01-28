@@ -3,7 +3,7 @@
   <div class="pong__game">
     <div class="dl__status" :style="{ width: `${percent}%`}"></div>
     <img id="paddle" style="display: none" src="/static/paddle.png"/>
-    <p v-if="!launch" class="instructions"><span>Get the Highest score each time you download a song :3.</span><br><br>Tap to start ^o^/</p>
+    <p v-if="!launch" class="instructions"><span>Get the Highest score each time you download a song ^o^/</span><br><br>Tap to start!</p>
     <p v-else class="score"><span>Score</span><br>{{score}}</p>
     <p class="highest">Highest score<br><br><b>{{highestScore}}</b>pts</p>
     <canvas ref="pong" moz-opaque class="canvas"></canvas>

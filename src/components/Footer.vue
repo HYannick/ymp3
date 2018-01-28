@@ -14,6 +14,9 @@
     padding: 15px;
     position: absolute;
     bottom: 0;
+    @media screen and (max-width: 600px) {
+      text-align: left;
+    }
     text-align: center;
     transition: all 0.3s;
     &:after {
