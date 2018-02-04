@@ -1,7 +1,6 @@
 <template>
   <transition name="fade">
     <div class="input__container">
-
       <div v-show="!launchGame">
         <div class="youtube__search">
           <div style="width: 100%; padding: 0 15px;">

@@ -21,7 +21,10 @@
           </div>
         </div>
         <a class="dl-link" :download="`${song.title}.mp3`" :href="downloadLink"></a>
-        <span v-show="successText" class="more__info">{{$t("moreInfo")}}</span>
+        <div v-show="successText" class="finished__download">
+          <span  class="more__info">{{$t("moreInfo")}}</span>
+          <span class="failed__download">{{$t("notDownload")}} <a style="color: red" :download="`${song.title}.mp3`" :href="downloadLink">{{$t("retry")}}</a></span>
+        </div>
       </div>
       <div v-if="gameRequest" class="game__request">
         <p>Wants to play a game ?</p>
@@ -235,15 +238,29 @@
     color: #38ef7d;
   }
 
-  .more__info {
+  .finished__download {
     position: absolute;
-    bottom: 25px;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    @media screen and (max-width: 600px) {
+      width: 80%;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .failed__download {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
+  .more__info {
     font-size: 12px;
     text-align: center;
     color: #38ea7a;
     padding: 5px 15px;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: 30px 30px 50px 50px;
     @media screen and (max-width: 600px) {
       width: 80%;

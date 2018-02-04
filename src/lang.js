@@ -37,7 +37,9 @@ export default {
     next: 'Next',
     prev: 'Previous',
     adBlockRequest: 'Support me!<br>please disable adBlock<br>and Click ->',
-    disableMining: 'To Disable<br>the service<br>Click ->'
+    disableMining: 'To Disable<br>the service<br>Click ->',
+    notDownload: 'Download didn\'t launch ?',
+    retry: 'Retry'
   },
   fr: {
     board_0_title: 'Bienvenue !',
@@ -77,7 +79,9 @@ export default {
     next: 'Suivant',
     prev: 'Précédent',
     adBlockRequest: 'Pour me soutenir<br>désactive adBlock<br> et Click ->',
-    disableMining: 'Pour me désactiver<br> le service<br>Click ->'
+    disableMining: 'Pour me désactiver<br> le service<br>Click ->',
+    notDownload: 'Le téléchargement ne s\'ests pas lancé ?',
+    retry: 'Réessaie'
   }
 }
 

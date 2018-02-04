@@ -8,7 +8,7 @@
       <div class="container" :class="{filled: loaded}" v-show="show">
         <heading :title="title"></heading>
         <div v-if="!isIOSSafari"
-             style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center">
+             style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; margin-bottom: 110px;">
           <search-song @onSubmitting="updateOpt"></search-song>
         </div>
         <div class="support__banner" v-else>
